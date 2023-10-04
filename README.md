@@ -8,14 +8,13 @@
 
 <h1 align="center">
    <a href="https://themeselection.com/item/sneat-free-bootstrap-html-laravel-admin-template/" target="_blank" align="center">
-      Sneat - Free Bootstrap 5 HTML Laravel Admin Template
+      DigitoMove Website
    </a>
 </h1>
 
 <p align="center">Most Powerful & Comprehensive Free Bootstrap 5 HTML Laravel Admin Dashboard Template built for developers!</p>
 
 ![GitHub](https://img.shields.io/github/license/themeselection/sneat-html-laravel-admin-template-free) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/themeselection/sneat-html-laravel-admin-template-free) ![GitHub issues](https://img.shields.io/github/issues/themeselection/sneat-html-laravel-admin-template-free) ![GitHub closed issues](https://img.shields.io/github/issues-closed/themeselection/sneat-html-laravel-admin-template-free) ![Twitter Follow](https://img.shields.io/twitter/follow/Theme_Selection?style=social)
-
 
 <kbd>[![Sneat - Bootstrap 5 HTML Laravel Admin Template Demo Screenshot](https://cdn.jsdelivr.net/gh/themeselection/ts-assets/sneat/sneat-bootstrap-laravel-admin-template-free/marketing/sneat-bootstrap-laravel-admin-template-free-github.png)](https://themeselection.com/item/sneat-free-bootstrap-html-laravel-admin-template/)</kbd>
 
@@ -71,7 +70,6 @@ php artisan serve
 ```bash
 yarn prod
 ```
-
 
 ## What's Included 📦
 
@@ -171,20 +169,20 @@ We use GitHub issues as support tickets to manage Item support.
 
 Contribution are always welcome and recommended! Here is how:
 
-* Fork the repository ([here is the guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
-* Clone to your machine `git clone https://github.com/YOUR_USERNAME/REPO_NAME` Make your changes
-* Create a pull request
+- Fork the repository ([here is the guide](https://docs.github.com/en/get-started/quickstart/fork-a-repo)).
+- Clone to your machine `git clone https://github.com/YOUR_USERNAME/REPO_NAME` Make your changes
+- Create a pull request
 
 ### Contribution Requirements 🧰
 
-* When you contribute, you agree to give a non-exclusive license to ThemeSelection to use that contribution in any context as we (ThemeSelection) see appropriate.
-* If you use content provided by another party, it must be appropriately licensed using an open-source license.
-* Contributions are only accepted through Github pull requests.
-* Finally, the contributed code must work in all supported browsers (see above for browser support).
+- When you contribute, you agree to give a non-exclusive license to ThemeSelection to use that contribution in any context as we (ThemeSelection) see appropriate.
+- If you use content provided by another party, it must be appropriately licensed using an open-source license.
+- Contributions are only accepted through Github pull requests.
+- Finally, the contributed code must work in all supported browsers (see above for browser support).
 
 ## Creators 😇
 
-* [ThemeSelection](https://themeselection.com)
+- [ThemeSelection](https://themeselection.com)
 
 ## Changelog 📆
 
@@ -202,7 +200,7 @@ If you want to Download [Free Admin Templates](https://themeselection.com/item/c
 
 ## Other variants
 
-* [html variant]({https://themeselection.com/item/sneat-free-bootstrap-html-admin-template/})
+- [html variant]({https://themeselection.com/item/sneat-free-bootstrap-html-admin-template/})
 <!-- Add others here -->
 
 ## Social Media :earth_africa:
