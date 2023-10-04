@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 $controller_path = 'App\Http\Controllers';
 
 // Home
-Route::get('/', $controller_path . '\pages\MiscUnderMaintenance@index')->name('pages-misc-under-maintenance');
-
+// Route::get('/', $controller_path . '\pages\MiscUnderMaintenance@index')->name('pages-misc-under-maintenance');
+Route::get('/', $controller_path . '\HomeController@index')->name('home');
 
 
 
