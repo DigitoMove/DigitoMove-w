@@ -19,6 +19,8 @@ $controller_path = 'App\Http\Controllers';
 Route::get('/', $controller_path . '\pages\MiscUnderMaintenance@index')->name('pages-misc-under-maintenance');
 
 
+
+
 // Main Page Route
 
 Route::get('/dashboard', $controller_path . '\dashboard\Analytics@index')->name('dashboard-analytics');
