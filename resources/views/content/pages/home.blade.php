@@ -1,6 +1,6 @@
-@extends('layouts/user')
+@extends('layouts/app')
 
-@section('title', 'Home - ' . config('app.name'))
+@section('title', 'Home')
 
 @section('page-style')
     <!-- Page -->
@@ -9,7 +9,7 @@
 
 @section('content')
     <!--Under Maintenance -->
-    <div class="container-xxl container-p-y">
+    <div class="container-xl container-p-y">
         <div class="misc-wrapper">
             <h2 class="mb-2 mx-2">Under Maintenance!</h2>
             <p class="mb-4 mx-2">

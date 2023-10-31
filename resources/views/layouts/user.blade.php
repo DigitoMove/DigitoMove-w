@@ -10,13 +10,13 @@
     $isFooter = $isFooter ?? true;
     $customizerHidden = $customizerHidden ?? '';
     $pricingModal = $pricingModal ?? false;
-    
+
     /* HTML Classes */
     $navbarDetached = 'navbar-detached';
-    
+
     /* Content classes */
     $container = $container ?? 'container-xxl';
-    
+
 @endphp
 
 @section('layoutContent')
@@ -27,12 +27,11 @@
                 @include('layouts/sections/menu/verticalMenu')
             @endif
 
-
             <!-- Layout page -->
             <div class="layout-page">
                 <!-- BEGIN: Navbar-->
                 @if ($isNavbar)
-                    @include('layouts/sections/navbar/navbar')
+                    @include('layouts/sections/navbar/user-navbar')
                 @endif
                 <!-- END: Navbar-->
 
