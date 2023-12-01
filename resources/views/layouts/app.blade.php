@@ -37,7 +37,7 @@
 
 
                 <!-- Content wrapper -->
-                <div class="content-wrapper my-5">
+                <div class="content-wrapper my-5 py-5">
 
                     @yield('content')
 
