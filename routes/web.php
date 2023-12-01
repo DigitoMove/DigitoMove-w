@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,8 @@ Route::middleware('auth')->group(function () {
 Route::resource('exhibition', ProductController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('blog', PostController::class);
+
+Route::get('about', [HomeController::class, 'about'])->name('about-us');
 
 Route::middleware('admin')->group(function () {
   Route::resource('users', UserController::class);

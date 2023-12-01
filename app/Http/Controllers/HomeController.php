@@ -15,4 +15,10 @@ class HomeController extends Controller
 
     return view('content.pages.home', compact('nav'));
   }
+
+  public function about()
+  {
+
+    return view('content.pages.about');
+  }
 }
