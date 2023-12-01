@@ -12,28 +12,30 @@
         <div class="collapse navbar-collapse justify-content-end" id="guest-navbar">
             <ul class="navbar-nav">
                 <li class="nav-item me-3">
-                    <a href="{{ route('home') }}" class="btn btn-sm btn-{{ Route::is('home') ? 'danger' : 'primary' }}">
+                    <a href="{{ route('home') }}"
+                        class="btn btn-sm btn-{{ Route::is('home') ? 'danger' : 'primary float-end' }}">
                         Home
                     </a>
                 </li>
                 <li class="nav-item me-3">
                     <a href="{{ route('exhibition.index') }}"
-                        class="btn btn-sm btn-{{ Route::is('exhibition*') ? 'danger' : 'primary' }}">
+                        class="btn btn-sm btn-{{ Route::is('exhibition*') ? 'danger' : 'primary float-end' }}">
                         Exhibition
                     </a>
                 </li>
                 <li class="nav-item me-3">
                     <a href="{{ route('blog.index') }}"
-                        class="btn btn-sm btn-{{ Route::is('blog*') ? 'danger' : 'primary' }}">Blog</a>
+                        class="btn btn-sm btn-{{ Route::is('blog*') ? 'danger' : 'primary float-end' }}">Blog</a>
                 </li>
                 <li class="nav-item me-3">
                     <a href="{{ route('services.index') }}"
-                        class="btn btn-sm btn-{{ Route::is('services*') ? 'danger' : 'primary' }}">Services</a>
+                        class="btn btn-sm btn-{{ Route::is('services*') ? 'danger' : 'primary float-end' }}">Services</a>
                 </li>
 
                 <li class="nav-item me-3">
                     <a href="{{ route('about-us') }}"
-                        class="btn btn-sm btn-{{ Route::is('about-us') ? 'danger' : 'primary' }}">About Us</a>
+                        class="btn btn-sm btn-{{ Route::is('about-us') ? 'danger' : 'primary float-end' }}">About
+                        Us</a>
                 </li>
             </ul>
         </div>

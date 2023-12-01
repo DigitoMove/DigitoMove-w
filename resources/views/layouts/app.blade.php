@@ -21,14 +21,14 @@
 
 @section('layoutContent')
     <div class="layout-wrapper layout-content-navbar {{ $isMenu ? '' : 'layout-without-menu' }}">
-        <div class="layout-container">
+        <div class="layout-container my-0 py-0">
 
             @if ($isMenu)
                 @include('layouts/sections/menu/verticalMenu')
             @endif
 
             <!-- Layout page -->
-            <div class="layout-page">
+            <div class="w-100 my-0 py-0">
                 <!-- BEGIN: Navbar-->
                 @if ($isNavbar)
                     @include('layouts/sections/navbar/navbar')
@@ -39,20 +39,7 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper my-5">
 
-                    <!-- Content -->
-                    @if ($isFlex)
-                        <div class="{{ $container }} d-flex align-items-stretch flex-grow-1 p-0">
-                        @else
-                            <div class="{{ $container }} flex-grow-1 container-p-y">
-                    @endif
-
                     @yield('content')
-
-                    <!-- pricingModal -->
-                    @if ($pricingModal)
-                        @include('_partials/_modals/modal-pricing')
-                    @endif
-                    <!--/ pricingModal -->
 
                 </div>
                 <!-- / Content -->
