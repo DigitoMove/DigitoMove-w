@@ -1,11 +1,4 @@
-@php
-    $containerNav = $containerNav ?? 'container-fluid';
-    $navbarDetached = $navbarDetached ?? '';
-
-@endphp
-
-<nav class="layout-navbar {{ $containerNav }} navbar navbar-expand-lg {{ $navbarDetached }} bg-dark" id="layout-navbar"
-    style="position: fixed; align-self:center;">
+<nav class="navbar navbar-expand-lg bg-dark w-100" style="position: fixed;">
     <div class="container">
         <a href="{{ route('home') }}" class="navbar-brand">
             <img src="{{ asset('logo.png') }}" width="60" height="60" style="border-radius: 50%;" alt="Logo">
