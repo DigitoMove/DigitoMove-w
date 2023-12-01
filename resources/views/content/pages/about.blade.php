@@ -57,8 +57,6 @@
                             To be the number one Digital Migration Solution provider accross the globe, in terms of
                             Software, and Digital Literacy.
                         </p>
-                        <a href="javascript:void(0)" class="card-link">Card link</a>
-                        <a href="javascript:void(0)" class="card-link">Another link</a>
                     </div>
                 </div>
                 <h6 class="mt-2 text-muted">Core Values</h6>

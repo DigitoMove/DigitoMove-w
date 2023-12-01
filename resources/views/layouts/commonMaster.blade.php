@@ -23,6 +23,8 @@
     <!-- Include Styles -->
     @include('layouts/sections/styles')
 
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+
     <!-- Include Scripts for customizer, helper, analytics, config -->
     @include('layouts/sections/scriptsIncludes')
 </head>
