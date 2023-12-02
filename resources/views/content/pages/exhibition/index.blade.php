@@ -10,12 +10,44 @@
 @section('content')
     <!--Under Maintenance -->
     <div class="container-xl container-p-y">
-        <div class="misc-wrapper">
-            <h2 class="mb-2 mx-2">Exhibition</h2>
-            <a href="{{ url('/') }}" class="btn btn-primary">Back to home</a>
-            <div class="mt-4">
-                <img src="{{ asset('assets/img/illustrations/girl-doing-yoga-light.png') }}" alt="girl-doing-yoga-light"
-                    width="500" class="img-fluid">
+        <h5 class="pb-1 mb-2">Our Latest Work</h5>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <a href="{{ route('exhibition.show', 'ulrika') }}">
+                                <img src="{{ asset('assets/img/exhibition/ulrika/homepage-top.png') }}"
+                                    alt="Ulrika Institute of Home Economics Website" class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <p class="card-text">Ulrika Institute of Home Economics Website</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <p class="card-text">
+                            Shows all the products we have worked on, the products and services we have offered over time.
+                            It should be noted that all projects being worked on are not diplayed on this page for purposes
+                            of confidentiality.
+                        </p>
+
+                        <small class="text-light fw-semibold">Project Categories Include but not limited to:</small>
+                        <div class="demo-inline-spacing mt-3">
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">Websites</li>
+                                <li class="list-group-item">Mobile Apps</li>
+                                <li class="list-group-item">Graphics Products</li>
+                                <li class="list-group-item">Desktop Applications</li>
+                                <li class="list-group-item">Digital Management Systems</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
