@@ -14,8 +14,17 @@ return [
   // "documentation" => "https://digitomove.xyz/docs",
   // "repository" => "https://github.com/themeselection/sneat-html-laravel-admin-template-free",
 
+  "telNumber" => "+256700915094",
+  "telNumber2" => "+256701822382",
+  "whatsappURL" => "https://wa.me/+256700915094",
+  "whatsappUsername" => "+256700-915-094",
   "facebookURL" => "https://www.facebook.com/digitomove",
   "facebookUsername" => "@DigitoMove",
+
+  "facebookURL" => "https://www.facebook.com/digitomove",
+  "facebookUsername" => "@DigitoMove",
+  "youtubeURL" => "https://www.youtube.com/digitomove",
+  "youtubeUsername" => "@DigitoMove",
   "twitterURL" => "https://twitter.com/digitomove",
   "twitterUsername" => "@DigitoMove",
   "githubURL" => "https://github.com/DigitoMove",
