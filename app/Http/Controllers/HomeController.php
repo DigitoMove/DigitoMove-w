@@ -21,4 +21,8 @@ class HomeController extends Controller
 
     return view('content.pages.about');
   }
+
+  public function epaphradito(){
+    return view();
+  }
 }

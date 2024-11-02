@@ -31,6 +31,8 @@ Route::resource('exhibition', ProductController::class);
 Route::resource('services', ServiceController::class);
 Route::resource('blog', PostController::class);
 
+Route::get('epaphradito', [HomeController::class, 'epaphradito'])->name('epaphrdaito');
+
 Route::get('about', [HomeController::class, 'about'])->name('about-us');
 
 Route::middleware('admin')->group(function () {

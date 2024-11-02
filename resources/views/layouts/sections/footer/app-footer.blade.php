@@ -6,18 +6,15 @@
             <script>
                 document.write(new Date().getFullYear())
             </script>
-            , made with ❤️ by <a
-                href="{{ !empty(config('variables.creatorUrl')) ? config('variables.creatorUrl') : '' }}" target="_blank"
-                class="footer-link fw-bolder">{{ !empty(config('variables.creatorName')) ? config('variables.creatorName') : '' }}</a>
+            , made with ❤️ by <a href="{{ config('variables.creatorURL') }}" target="_blank"
+                class="footer-link fw-bolder">{{ config('variables.creatorName') }}</a>
         </div>
         <div>
-            <a href="{{ config('variables.githubUrl') ? config('variables.githubUrl') : '#' }}" target="_blank"
-                class="footer-link me-4">
-                <span class="bi bi-github"></span>
-                GitHub</a>
-            <a href="{{ config('variables.twitterUrl') ? config('variables.twitterUrl') : '#' }}" target="_blank"
-                class="footer-link me-4">Twitter</a>
-            <a href="{{ config('variables.facebookUrl') ? config('variables.facebookUrl') : '#' }}" target="_blank"
+            <a href="{{ config('variables.githubURL') }}" target="_blank" class="footer-link me-4">
+                <span class="bi bi-github"></span>GitHub</a>
+            <a href="{{ config('variables.twitterURL') }}" target="_blank" class="footer-link me-4">x.com</a>
+            <a href="{{ config('variables.instagramURL') }}" target="_blank" class="footer-link me-4">Instagram</a>
+            <a href="{{ config('variables.facebookUrl') }}" target="_blank"
                 class="footer-link d-none d-sm-inline-block">Facebook</a>
         </div>
     </div>
