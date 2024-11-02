@@ -23,6 +23,6 @@ class HomeController extends Controller
   }
 
   public function epaphradito(){
-    return view();
+    return view('content.pages.epaphradito');
   }
 }

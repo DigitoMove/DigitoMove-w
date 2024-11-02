@@ -6,7 +6,7 @@
             <script>
                 document.write(new Date().getFullYear())
             </script>
-            , made with ❤️ by <a href="{{ config('variables.creatorURL') }}" target="_blank"
+            , made with ❤️ by <a href="{{ config('variables.creatorURL') }}"
                 class="footer-link fw-bolder">{{ config('variables.creatorName') }}</a>
         </div>
         <div>
