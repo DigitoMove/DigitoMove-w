@@ -27,6 +27,6 @@ class HomeController extends Controller
   }
 
   public function privacy(){
-
+    return view('content.pages.privacy');
   }
 }
