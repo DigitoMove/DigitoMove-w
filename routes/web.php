@@ -32,6 +32,7 @@ Route::resource('services', ServiceController::class);
 Route::resource('blog', PostController::class);
 
 Route::get('epaphradito', [HomeController::class, 'epaphradito'])->name('epaphrdaito');
+Route::get('privacy', [HomeController::class, ''])->name('privacy');
 
 Route::get('about', [HomeController::class, 'about'])->name('about-us');
 

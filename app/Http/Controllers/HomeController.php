@@ -25,4 +25,8 @@ class HomeController extends Controller
   public function epaphradito(){
     return view('content.pages.epaphradito');
   }
+
+  public function privacy(){
+
+  }
 }
