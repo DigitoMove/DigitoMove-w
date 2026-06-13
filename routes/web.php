@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Content\InquiryController;
+use App\Http\Controllers\Content\PageController;
+use App\Http\Controllers\Content\PageSectionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +19,22 @@ use Illuminate\Support\Facades\Route;
 $controller_path = 'App\Http\Controllers';
 
 // Home
-Route::get('/', $controller_path . '\pages\MiscUnderMaintenance@index')->name('pages-misc-under-maintenance');
+Route::get('/', $controller_path . '\dashboard\Analytics@index')->name('home');
 
 
 // Main Page Route
 
 Route::get('/dashboard', $controller_path . '\dashboard\Analytics@index')->name('dashboard-analytics');
+
+Route::resource('/content/pages', PageController::class)
+  ->except('show')
+  ->names('content-pages');
+Route::post('/content/pages/{page}/sections', [PageSectionController::class, 'store'])->name('page-sections.store');
+Route::put('/content/sections/{section}', [PageSectionController::class, 'update'])->name('page-sections.update');
+Route::delete('/content/sections/{section}', [PageSectionController::class, 'destroy'])->name('page-sections.destroy');
+Route::get('/inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
+Route::patch('/inquiries/{inquiry}', [InquiryController::class, 'update'])->name('inquiries.update');
+Route::delete('/inquiries/{inquiry}', [InquiryController::class, 'destroy'])->name('inquiries.destroy');
 
 // layout
 Route::get('/layouts/without-menu', $controller_path . '\layouts\WithoutMenu@index')->name('layouts-without-menu');
