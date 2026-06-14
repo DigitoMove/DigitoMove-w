@@ -15,6 +15,14 @@ class PublicSiteTest extends TestCase
         foreach (['/', '/about', '/services', '/work', '/blog', '/privacy', '/contact', '/learning'] as $path) {
             $this->get($path)->assertOk();
         }
+
+        $this->get('/services')
+            ->assertSee('assets/img/services/web-development.jpeg', false)
+            ->assertSee('assets/img/services/advanced-computer-training.png', false);
+
+        $this->get('/contact')
+            ->assertSee('+256 701 822 382')
+            ->assertSee('Kampala, Uganda');
     }
 
     public function test_visitor_can_submit_an_inquiry()

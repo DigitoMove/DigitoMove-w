@@ -18,6 +18,14 @@
 
 <section class="trust-strip"><span>Trusted capabilities</span><div>Web platforms</div><div>Mobile apps</div><div>Business systems</div><div>Digital training</div></section>
 
+<section class="section-shell image-led-services">
+  <div class="image-service-main reveal"><img src="{{ asset('assets/img/promotions/web-dev3.jpg') }}" alt="Web development"><div><span class="kicker light">Web platforms</span><h2>Designed clearly. Built to perform.</h2><a href="{{ route('services.index') }}" class="button light">Explore services</a></div></div>
+  <div class="image-service-stack">
+    <article class="reveal"><img src="{{ asset('assets/img/promotions/mobile-dev2.jpg') }}" alt="Mobile app development"><div><strong>Mobile applications</strong><span>Useful experiences for people on the move.</span></div></article>
+    <article class="reveal"><img src="{{ asset('assets/img/promotions/software-dev1.jpg') }}" alt="Custom software development"><div><strong>Custom business software</strong><span>Systems shaped around real operating needs.</span></div></article>
+  </div>
+</section>
+
 <section class="section-shell split-section">
   <div><span class="kicker">What we do</span><h2>Technology should feel like progress, not friction.</h2></div>
   <div><p>We combine product thinking, intentional design, and robust engineering to solve real operating problems.</p><a href="{{ route('services.index') }}" class="text-link">Explore every capability <i class="bx bx-right-arrow-alt"></i></a></div>
@@ -39,6 +47,6 @@
 </section>
 
 <section class="section-shell stats-row">
-  <div><strong>2021</strong><span>Founded in Kampala</span></div><div><strong>End-to-end</strong><span>From strategy to support</span></div><div><strong>Human-first</strong><span>Technology made approachable</span></div>
+  <div><strong>2021</strong><span>Founded in Kampala</span></div><div><strong>End-to-end</strong><span>From strategy to support</span></div><div><strong>+256 701 822 382</strong><span>Call or WhatsApp Digito Move</span></div>
 </section>
 @endsection

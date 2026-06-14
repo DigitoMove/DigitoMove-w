@@ -53,6 +53,6 @@ class AdminPlatformTest extends TestCase
         ])->assertOk();
 
         $this->assertDatabaseHas('course_applications', ['course_id' => $course->id, 'email' => 'student@example.com']);
-        $this->assertDatabaseHas('payments', ['amount' => 50000, 'status' => 'pending']);
+        $this->assertDatabaseHas('payments', ['amount' => 50000, 'status' => 'pending', 'provider' => 'pesapal']);
     }
 }

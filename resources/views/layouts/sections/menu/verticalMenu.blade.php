@@ -3,8 +3,7 @@
   <!-- ! Hide app brand if navbar-full -->
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
-      <span class="brand-mark">D</span>
-      <span class="app-brand-text demo menu-text fw-bold ms-2">Dmove</span>
+      <img src="{{ asset('assets/img/logos/logo-white.png') }}" class="admin-brand-logo" alt="DigitoMove">
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-autod-block d-xl-none">

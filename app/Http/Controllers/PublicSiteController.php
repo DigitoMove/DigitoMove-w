@@ -96,8 +96,10 @@ class PublicSiteController extends Controller
             'motivation' => ['nullable', 'string', 'max:2000'],
         ]);
         $application = $course->applications()->create($data + ['user_id' => auth()->id()]);
+        $checkoutUrl = config('variables.payments.'.$course->slug);
         $payment = $application->payments()->create([
             'amount' => $course->application_fee, 'reference' => 'DM-'.strtoupper(substr(md5(uniqid()), 0, 10)),
+            'provider' => $checkoutUrl ? 'pesapal' : 'manual', 'metadata' => $checkoutUrl ? ['checkout_url' => $checkoutUrl] : null,
             'status' => $course->application_fee > 0 ? 'pending' : 'paid', 'paid_at' => $course->application_fee > 0 ? null : now(),
         ]);
         return view('public.application-success', compact('application', 'payment'));
