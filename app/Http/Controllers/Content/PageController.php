@@ -66,7 +66,7 @@ class PageController extends Controller
             'seo_description' => ['nullable', 'string', 'max:300'],
         ]);
 
-        $data['slug'] = Str::slug($data['slug'] ?: $data['title']);
+        $data['slug'] = Str::slug(($data['slug'] ?? null) ?: $data['title']);
         $data['published_at'] = $data['status'] === 'published' ? ($page?->published_at ?: now()) : null;
 
         return $data;

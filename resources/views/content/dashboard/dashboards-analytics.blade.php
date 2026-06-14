@@ -49,6 +49,17 @@ window.dashboardData = @json($dashboardData);
     @endforeach
   </div>
 
+  <div class="card admin-card mb-4">
+    <div class="card-header"><span class="eyebrow">Operations</span><h5 class="mb-0">Workspace pulse</h5></div>
+    <div class="card-body"><div class="row g-3">
+      @foreach($operations as $item)
+      <div class="col-6 col-lg"><a href="{{ route($item['route']) }}" class="d-flex align-items-center gap-3 p-3 rounded border h-100">
+        <span class="metric-icon bg-label-primary mb-0"><i class="bx {{ $item['icon'] }}"></i></span><span><strong class="d-block fs-4">{{ $item['value'] }}</strong><small class="text-muted">{{ $item['label'] }}</small></span>
+      </a></div>
+      @endforeach
+    </div></div>
+  </div>
+
   <div class="row g-4 mb-4">
     <div class="col-xl-8">
       <div class="card admin-card h-100">

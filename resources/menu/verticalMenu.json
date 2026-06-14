@@ -1,10 +1,16 @@
 {
   "menu": [
     {"url": "/dashboard", "name": "Overview", "icon": "menu-icon tf-icons bx bx-grid-alt", "slug": "dashboard-analytics"},
-    {"menuHeader": "Manage"},
+    {"menuHeader": "Website"},
+    {"url": "/admin/projects", "name": "Works & Demos", "icon": "menu-icon tf-icons bx bx-briefcase-alt-2", "slug": "admin.projects"},
+    {"url": "/admin/posts", "name": "Articles", "icon": "menu-icon tf-icons bx bx-edit", "slug": "admin.posts"},
     {"url": "/content/pages", "name": "Pages", "icon": "menu-icon tf-icons bx bx-layer", "slug": "content-pages"},
     {"url": "/inquiries", "name": "Inquiries", "icon": "menu-icon tf-icons bx bx-message-square-dots", "slug": "inquiries"},
-    {"menuHeader": "Workspace"},
-    {"url": "/pages/account-settings-account", "name": "Settings", "icon": "menu-icon tf-icons bx bx-cog", "slug": "pages-account-settings-account"}
+    {"menuHeader": "Learning"},
+    {"url": "/admin/courses", "name": "Courses & Lessons", "icon": "menu-icon tf-icons bx bx-book-open", "slug": "admin.courses"},
+    {"url": "/admin/applications", "name": "Applications", "icon": "menu-icon tf-icons bx bx-receipt", "slug": "admin.applications"},
+    {"menuHeader": "Administration"},
+    {"url": "/admin/users", "name": "Users", "icon": "menu-icon tf-icons bx bx-group", "slug": "admin.users"},
+    {"url": "/admin/profile", "name": "My Profile", "icon": "menu-icon tf-icons bx bx-user-circle", "slug": "admin.profile.edit"}
   ]
 }

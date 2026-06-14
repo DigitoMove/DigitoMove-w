@@ -44,6 +44,9 @@ $navbarDetached = ($navbarDetached ?? '');
         </div>
         <!-- /Search -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+          <li class="nav-item me-2 d-none d-sm-block">
+            <a href="{{ route('home') }}" class="btn btn-sm btn-outline-primary" target="_blank"><i class="bx bx-link-external me-1"></i>View site</a>
+          </li>
 
           <!-- Place this tag where you want the button to render. -->
           <li class="nav-item me-3 d-none d-sm-block">
@@ -59,7 +62,7 @@ $navbarDetached = ($navbarDetached ?? '');
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
                       <div class="avatar avatar-online">
@@ -83,9 +86,9 @@ $navbarDetached = ($navbarDetached ?? '');
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
                   <i class='bx bx-cog me-2'></i>
-                  <span class="align-middle">Settings</span>
+                  <span class="align-middle">Users</span>
                 </a>
               </li>
               <li>
@@ -101,10 +104,9 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
-                  <i class='bx bx-power-off me-2'></i>
-                  <span class="align-middle">Log Out</span>
-                </a>
+                <form method="POST" action="{{ route('logout') }}">@csrf
+                  <button class="dropdown-item" type="submit"><i class='bx bx-power-off me-2'></i><span class="align-middle">Log Out</span></button>
+                </form>
               </li>
             </ul>
           </li>
