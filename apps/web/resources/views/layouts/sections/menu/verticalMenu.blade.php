@@ -3,7 +3,7 @@
   <!-- ! Hide app brand if navbar-full -->
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
-      <img src="{{ asset('assets/img/logos/logo-white.png') }}" class="admin-brand-logo" alt="DigitoMove">
+      <img src="{{ asset('assets/img/logos/logo-white.png') }}" class="admin-brand-logo" alt=""><span class="admin-brand-name">Digito Move<small>Business workspace</small></span>
     </a>
 
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-autod-block d-xl-none">
@@ -31,7 +31,7 @@
     $activeClass = null;
     $currentRouteName = Route::currentRouteName();
 
-    if ($currentRouteName === $menu->slug) {
+    if ($currentRouteName === $menu->slug || (is_string($menu->slug) && str_starts_with($currentRouteName ?? '', $menu->slug.'.'))) {
     $activeClass = 'active';
     }
     elseif (isset($menu->submenu)) {

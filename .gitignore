@@ -2,7 +2,7 @@
 **/.env
 **/.env.*
 !**/.env.example
-**/vendor/
+/apps/web/vendor/
 **/node_modules/
 **/.dart_tool/
 

@@ -37,10 +37,10 @@ $navbarDetached = ($navbarDetached ?? '');
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Search -->
         <div class="navbar-nav align-items-center">
-          <div class="nav-item d-flex align-items-center">
+          <form method="GET" action="{{ route('admin.invoices.index') }}" class="nav-item d-flex align-items-center admin-search">
             <i class="bx bx-search fs-4 lh-0"></i>
-            <input type="text" class="form-control border-0 shadow-none" placeholder="Search workspace..." aria-label="Search workspace">
-          </div>
+            <input type="text" class="form-control border-0 shadow-none" name="q" placeholder="Search invoices..." aria-label="Search invoices">
+          </form>
         </div>
         <!-- /Search -->
         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -50,14 +50,14 @@ $navbarDetached = ($navbarDetached ?? '');
 
           <!-- Place this tag where you want the button to render. -->
           <li class="nav-item me-3 d-none d-sm-block">
-            <a href="{{ route('content-pages.create') }}" class="btn btn-sm btn-primary"><i class="bx bx-plus me-1"></i>Create</a>
+            <a href="{{ route('admin.invoices.create') }}" class="btn btn-sm btn-primary"><i class="bx bx-plus me-1"></i>New invoice</a>
           </li>
 
           <!-- User -->
           <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
-                <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                <span class="admin-user-initials" aria-label="Account menu">{{ strtoupper(substr(auth()->user()->name ?? 'Admin', 0, 1)) }}</span>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -66,12 +66,12 @@ $navbarDetached = ($navbarDetached ?? '');
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
                       <div class="avatar avatar-online">
-                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                        <span class="admin-user-initials" aria-label="Account menu">{{ strtoupper(substr(auth()->user()->name ?? 'Admin', 0, 1)) }}</span>
                       </div>
                     </div>
                     <div class="flex-grow-1">
                       <span class="fw-semibold d-block">{{ auth()->user()->name ?? 'Workspace Admin' }}</span>
-                      <small class="text-muted">Content operations</small>
+                      <small class="text-muted">Administrator</small>
                     </div>
                   </div>
                 </a>
@@ -80,7 +80,7 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="{{ route('admin.profile.edit') }}">
                   <i class="bx bx-user me-2"></i>
                   <span class="align-middle">My Profile</span>
                 </a>
@@ -92,11 +92,11 @@ $navbarDetached = ($navbarDetached ?? '');
                 </a>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">
+                <a class="dropdown-item" href="{{ route('admin.invoices.index') }}">
                   <span class="d-flex align-items-center align-middle">
                     <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
                     <span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+
                   </span>
                 </a>
               </li>

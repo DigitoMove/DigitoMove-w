@@ -55,6 +55,12 @@ class Analytics extends Controller
       ['label' => 'Applications', 'value' => CourseApplication::count(), 'icon' => 'bx-receipt', 'route' => 'admin.applications.index'],
       ['label' => 'Pending payments', 'value' => Payment::where('status', 'pending')->count(), 'icon' => 'bx-wallet', 'route' => 'admin.applications.index'],
     ];
+    $billing = [
+      'outstanding' => \App\Models\Invoice::where('status', 'issued')->sum('total'),
+      'received' => \App\Models\Invoice::where('status', 'paid')->sum('total'),
+      'drafts' => \App\Models\Invoice::where('status', 'draft')->count(),
+    ];
+    $recentInvoices = \App\Models\Invoice::latest()->limit(5)->get();
     $dashboardData = [
       'labels' => $traffic->pluck('label')->values(),
       'values' => $traffic->pluck('value')->values(),
@@ -62,6 +68,6 @@ class Analytics extends Controller
       'sourceValues' => $sources->pluck('total')->values(),
     ];
 
-    return view('content.dashboard.dashboards-analytics', compact('stats', 'traffic', 'sources', 'topPages', 'recentInquiries', 'dashboardData', 'operations'));
+    return view('content.dashboard.dashboards-analytics', compact('stats', 'traffic', 'sources', 'topPages', 'recentInquiries', 'dashboardData', 'operations', 'billing', 'recentInvoices'));
   }
 }

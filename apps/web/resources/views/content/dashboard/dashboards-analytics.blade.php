@@ -21,22 +21,22 @@ window.dashboardData = @json($dashboardData);
 <div class="admin-page reveal">
   <div class="hero-panel mb-4">
     <div>
-      <span class="eyebrow">Command centre</span>
-      <h1>Make the next move obvious.</h1>
-      <p>Publishing health, audience signals, and inbound opportunities in one focused view.</p>
+      <span class="eyebrow">Business overview</span>
+      <h1>Your business, at a glance.</h1>
+      <p>Create invoices, track payments, and keep your next steps in view.</p>
     </div>
     <div class="d-flex gap-2 flex-wrap">
-      <a href="{{ route('content-pages.create') }}" class="btn btn-light"><i class="bx bx-plus me-1"></i> New page</a>
-      <a href="{{ route('inquiries.index') }}" class="btn btn-outline-light">Review inquiries</a>
+      <a href="{{ route('admin.invoices.create') }}" class="btn btn-light"><i class="bx bx-plus me-1"></i> Create invoice</a>
+      <a href="{{ route('admin.invoices.index') }}" class="btn btn-outline-light">View invoices</a>
     </div>
   </div>
 
   <div class="row g-3 mb-4">
     @foreach([
-      ['Published pages', $stats['published'], 'bx-globe', 'primary', 'Live and discoverable'],
-      ['30-day views', number_format($stats['views']), 'bx-show', 'info', 'Across all published content'],
+      ['Outstanding · UGX', number_format($billing['outstanding']), 'bx-receipt', 'primary', 'Issued invoices awaiting payment'],
+      ['Received · UGX', number_format($billing['received']), 'bx-check-circle', 'success', 'Verified invoice payments'],
       ['New inquiries', $stats['new_inquiries'], 'bx-message-square-dots', 'warning', 'Waiting for a response'],
-      ['Conversion', $stats['conversion'].'%', 'bx-trending-up', 'success', 'Views turning into inquiries'],
+      ['Draft invoices', $billing['drafts'], 'bx-edit', 'info', 'Ready for your review'],
     ] as [$label, $value, $icon, $color, $hint])
     <div class="col-sm-6 col-xl-3">
       <div class="metric-card h-100">
@@ -49,6 +49,13 @@ window.dashboardData = @json($dashboardData);
     @endforeach
   </div>
 
+  <div class="card admin-card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center"><div><span class="eyebrow">Billing</span><h5 class="mb-0">Recent invoices</h5></div><a href="{{ route('admin.invoices.index') }}" class="btn btn-sm btn-outline-primary">View all</a></div>
+    <div class="table-responsive"><table class="table admin-table mb-0"><thead><tr><th>Client / invoice</th><th>Status</th><th>Due date</th><th class="text-end">Amount · UGX</th></tr></thead><tbody>
+    @forelse($recentInvoices as $invoice)<tr><td><a class="fw-semibold" href="{{ route('admin.invoices.show', $invoice) }}">{{ $invoice->client_business ?: $invoice->client_name }}</a><small>{{ $invoice->number }}</small></td><td><span class="badge bg-label-{{ $invoice->status === 'paid' ? 'success' : ($invoice->is_overdue ? 'danger' : 'primary') }}">{{ $invoice->is_overdue ? 'Overdue' : ucfirst($invoice->status) }}</span></td><td>{{ $invoice->due_date?->format('d M Y') ?? 'On receipt' }}</td><td class="text-end fw-semibold">{{ number_format($invoice->total) }}</td></tr>
+    @empty<tr><td colspan="4" class="empty-state">Your invoices will appear here. <a href="{{ route('admin.invoices.create') }}">Create your first invoice</a>.</td></tr>@endforelse
+    </tbody></table></div>
+  </div>
   <div class="card admin-card mb-4">
     <div class="card-header"><span class="eyebrow">Operations</span><h5 class="mb-0">Workspace pulse</h5></div>
     <div class="card-body"><div class="row g-3">
