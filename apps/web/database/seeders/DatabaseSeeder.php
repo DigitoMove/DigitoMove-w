@@ -22,10 +22,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::updateOrCreate(['email' => 'admin@digitomove.test'], [
-            'name' => 'Digito Move Admin', 'role' => 'admin', 'phone' => '+256 700 000000',
-            'bio' => 'Workspace administrator', 'password' => Hash::make('Admin123!'), 'email_verified_at' => now(),
-        ]);
+        if (\Illuminate\Support\Facades\Artisan::call('admin:provision') !== 0) {
+            throw new \RuntimeException('Set ADMIN_EMAIL and ADMIN_PASSWORD before seeding the administrator.');
+        }
         if (User::where('role', '!=', 'admin')->count() === 0) {
             User::factory(7)->create();
         }
@@ -138,7 +137,7 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        $admin = User::where('email', 'admin@digitomove.test')->first();
+        $admin = User::where('email', config('admin.email'))->first();
         Post::updateOrCreate(['slug' => 'start-with-the-operating-problem'], [
             'author_id' => $admin->id, 'title' => 'Start with the operating problem', 'slug' => 'start-with-the-operating-problem',
             'excerpt' => 'Why the best software conversations begin before anyone mentions features.',

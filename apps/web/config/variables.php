@@ -8,7 +8,8 @@ return [
   'templateKeyword' => 'software company Uganda, web development, mobile app development, business systems, computer training, programming training',
   'productPage' => 'https://digitomove.xyz/services',
 
-  'email' => env('MAIL_INFO', 'info@digitomove.xyz'),
+  'email' => env('MAIL_INFO', 'info@digitomove.com'),
+  'emailSecondary' => env('MAIL_INFO_SECONDARY', 'digitomovecoltd@gmail.com'),
   'phone' => '+256701822382',
   'phoneDisplay' => '+256 701 822 382',
   'phoneSecondary' => '+256777522214',

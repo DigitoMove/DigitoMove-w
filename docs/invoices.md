@@ -89,3 +89,7 @@ Verified payment now automatically creates one receipt with a unique receipt num
 Clients can download the PDF from the paid invoice screen. Administrators have a download button on the invoice detail screen. The mobile API exposes `receipt_url`, served by `GET /api/v1/admin/invoices/{id}/receipt` with the same admin/token protection. Unpaid invoices return 404. PDFs are generated locally with remote content disabled and sent as private, non-cacheable attachments.
 
 Apply the new `2026_09_04_000002_create_invoice_receipts_table` migration before enabling this change. Receipt rendering and payment tests pass (21 tests, 141 assertions); the PDF and paid screen were visually reviewed using isolated demo data. No actual customer payment was simulated in the configured MySQL database or Nylon Pay account.
+
+## Administrator setup
+
+The administrator is configured from private `ADMIN_EMAIL` / `ADMIN_PASSWORD` environment values. Run `php artisan admin:provision` after migrations to create or update that administrator with a hashed password. The main seeder uses the same configuration instead of the former fixed demo login. The local preview administrator was provisioned separately in its isolated SQLite database. Existing receipt snapshots keep the contact details recorded when they were issued; new receipts include both company email addresses and phone numbers.
