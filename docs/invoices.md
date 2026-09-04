@@ -19,7 +19,7 @@ Set these only in the server's ignored `apps/web/.env` or hosting secret manager
 - `NYLONPAY_API_SECRET`
 - `NYLONPAY_WEBHOOK_SECRET`
 - `NYLONPAY_BASE_URL` (default: official Nylon Pay services URL)
-- `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_EMAIL`, `INVOICE_BUSINESS_ADDRESS`
+- `INVOICE_BUSINESS_NAME`, `INVOICE_BUSINESS_ADDRESS`
 - `APP_URL` (the real public HTTPS URL in deployment)
 
 Run `php artisan config:clear` after local changes, or rebuild the configuration cache during deployment. Set `APP_DEBUG=false` in production. Keys supplied during development have been stored locally; deploy them through your hosting secret mechanism.
@@ -113,3 +113,7 @@ Deploy and run `php artisan migrate --force` to apply `2026_09_04_000004_add_inv
 Invoice pages now render Open Graph and Twitter Card metadata directly in the HTML, with a static 1200 x 630 PNG at `public/assets/img/social/invoice-preview.png`. When a client invoice link is pasted into a supported messaging app, its preview can show the Digito Move card, title and description. Client names, amounts and payment status are omitted from the preview metadata; the invoice itself remains accessible to anyone with its private link. Drafts stay inaccessible. Search indexing remains disabled.
 
 Deploy the Blade partial, updated invoice view and PNG together. The public HTTPS invoice URL and image must be reachable by the messaging service without authentication or bot challenges. Set the production APP_URL to https://digitomove.com and leave ASSET_URL empty unless using a working HTTPS asset host. No database migration is needed for this preview feature. Existing shared messages may retain cached previews; paste the link into a new message after deployment. No message was sent during verification.
+
+## Billing email correction
+
+Invoices and downloaded/printed receipts show only `info@digitomove.com` as the company email. The canonical billing contact is set in `config/nylonpay.php`, independently of old `INVOICE_BUSINESS_EMAIL` or mail-sender settings. Gmail remains the alternate contact on the website contact page. Existing receipt downloads also display the corrected billing email; stored payment details and receipt numbers stay unchanged. After deploying these templates/config changes, run `php artisan config:clear` and `php artisan view:clear` (or rebuild the configuration cache during deployment). No migration is needed.

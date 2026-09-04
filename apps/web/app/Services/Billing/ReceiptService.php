@@ -24,7 +24,6 @@ class ReceiptService
                     'invoice_number' => $invoice->number, 'title' => $invoice->title,
                     'business_name' => config('nylonpay.business_name'),
                     'business_email' => config('nylonpay.business_email'),
-                    'business_email_secondary' => config('nylonpay.business_email_secondary'),
                     'business_phone' => config('nylonpay.business_phone'),
                     'business_phone_secondary' => config('nylonpay.business_phone_secondary'),
                     'business_address' => config('nylonpay.business_address'),
