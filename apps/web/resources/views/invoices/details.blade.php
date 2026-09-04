@@ -1,0 +1,9 @@
+<div class="invoice-document">
+  <div class="invoice-heading"><div><span class="invoice-kicker">{{ config('nylonpay.business_name') }}</span><h2>Invoice</h2><p>{{ $invoice->number }}</p></div><div><span class="invoice-status">{{ $invoice->is_overdue ? 'Overdue' : ucfirst($invoice->status) }}</span></div></div>
+  <div class="invoice-parties"><div><span class="invoice-kicker">Billed to</span><h3>{{ $invoice->client_business ?: $invoice->client_name }}</h3>@if($invoice->client_business)<p>{{ $invoice->client_name }}</p>@endif<p>{{ $invoice->client_email }}</p>@if($invoice->client_address)<p class="invoice-multiline">{{ $invoice->client_address }}</p>@endif</div><div><span class="invoice-kicker">From</span><h3>{{ config('nylonpay.business_name') }}</h3><p>{{ config('nylonpay.business_email') }}</p><p class="invoice-multiline">{{ config('nylonpay.business_address') }}</p><p>Issued: {{ $invoice->issued_at?->format('d M Y') ?? 'Draft' }}<br>Due: {{ $invoice->due_date?->format('d M Y') ?? 'On receipt' }}</p></div></div>
+  <h3>{{ $invoice->title }}</h3>
+  <div class="invoice-table-wrap"><table class="invoice-table"><thead><tr><th>Item</th><th>Qty</th><th class="amount">Unit price</th><th class="amount">Amount</th></tr></thead><tbody>@foreach($invoice->items as $item)<tr><td>{{ $item->description }}</td><td>{{ $item->quantity }}</td><td class="amount">{{ number_format($item->unit_price) }}</td><td class="amount">{{ number_format($item->total) }}</td></tr>@endforeach</tbody></table></div>
+  <div class="invoice-total"><span>Total · {{ $invoice->currency }}</span><strong>{{ number_format($invoice->total) }}</strong></div>
+  @if($invoice->notes)<div class="invoice-notes"><span class="invoice-kicker">Notes & terms</span><p class="invoice-multiline">{{ $invoice->notes }}</p></div>@endif
+  @if($invoice->paid_at)<p class="invoice-paid">Payment received on {{ $invoice->paid_at->format('d M Y, H:i') }}. Thank you.</p>@endif
+</div>
