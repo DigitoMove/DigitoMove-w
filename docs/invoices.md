@@ -93,3 +93,11 @@ Apply the new `2026_09_04_000002_create_invoice_receipts_table` migration before
 ## Administrator setup
 
 The administrator is configured from private `ADMIN_EMAIL` / `ADMIN_PASSWORD` environment values. Run `php artisan admin:provision` after migrations to create or update that administrator with a hashed password. The main seeder uses the same configuration instead of the former fixed demo login. The local preview administrator was provisioned separately in its isolated SQLite database. Existing receipt snapshots keep the contact details recorded when they were issued; new receipts include both company email addresses and phone numbers.
+
+## Mark an invoice paid manually
+
+Administrators can open a draft or issued invoice, choose **Mark as paid**, select cash/bank transfer/mobile money/other, enter an optional reference and a required internal note, then confirm the full amount was received. This sets the invoice to paid and creates its receipt in one database transaction. It records the administrator ID and payment details. The internal note is never included on the client receipt. Voided invoices cannot be marked paid, and repeat submissions preserve the first payment and receipt.
+
+Paid invoices offer **Print receipt** (opens the PDF inline; use the browser PDF viewer's print button) and **Download receipt · PDF**. Manually recorded receipts identify the payment method and business confirmation rather than claiming Nylon Pay processed them. A started provider checkout must be resolved with Nylon Pay to avoid a second collection; the admin form displays this reminder.
+
+Deploy the code and run `php artisan migrate --force` from `apps/web` to apply `2026_09_04_000003_add_manual_invoice_payments`. The scoped mobile endpoint is `POST /api/v1/admin/invoices/{id}/mark-paid`. Verification: 24 tests / 171 assertions pass, including permissions, required confirmation, void rejection, idempotent receipts and both PDF response modes.

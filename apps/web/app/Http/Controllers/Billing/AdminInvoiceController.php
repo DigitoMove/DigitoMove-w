@@ -33,9 +33,9 @@ class AdminInvoiceController extends Controller
         ]);
     }
 
-    public function receipt(Invoice $invoice, \App\Services\Billing\ReceiptService $receipts)
+    public function receipt(Request $request, Invoice $invoice, \App\Services\Billing\ReceiptService $receipts)
     {
-        return $receipts->download($invoice);
+        return $receipts->download($invoice, $request->boolean('print'));
     }
     public function create() { return view('admin.invoices.form', ['invoice' => new Invoice(['currency' => 'UGX'])]); }
     public function edit(Invoice $invoice)
@@ -70,5 +70,18 @@ class AdminInvoiceController extends Controller
     {
         $invoice = $service->void($invoice);
         return $request->is('api/*') ? new InvoiceResource($invoice->load('items')) : back()->with('success', 'Invoice voided.');
+    }
+
+    public function markPaid(Request $request, Invoice $invoice, InvoiceService $service)
+    {
+        $data = $request->validate([
+            'payment_method' => 'required|in:cash,bank_transfer,mobile_money,other',
+            'payment_reference' => 'nullable|string|max:180',
+            'payment_note' => 'required|string|max:2000',
+            'confirm_payment' => 'required|accepted',
+        ]);
+        $invoice = $service->markPaid($invoice, $request->user()->id, $data);
+        return $request->is('api/*') ? new InvoiceResource($invoice->load('items'))
+            : redirect()->route('admin.invoices.show', $invoice)->with('success', 'Invoice marked as paid. Your receipt is ready to print or download.');
     }
 }

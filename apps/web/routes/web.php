@@ -82,3 +82,5 @@ Route::post('/invoices/{token}/refresh', [\App\Http\Controllers\Billing\PublicIn
 
 Route::get('/invoices/{token}/receipt', [\App\Http\Controllers\Billing\PublicInvoiceController::class, 'receipt'])->middleware('throttle:10,1')->name('invoices.receipt');
 Route::get('/admin/invoices/{invoice}/receipt', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'receipt'])->middleware(['auth', 'admin', 'throttle:10,1'])->name('admin.invoices.receipt');
+
+Route::post('/admin/invoices/{invoice}/mark-paid', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'markPaid'])->middleware(['auth', 'admin'])->name('admin.invoices.mark-paid');

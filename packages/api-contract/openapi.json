@@ -483,6 +483,106 @@
           "429": {
             "description": "Rate limited"
           }
+        },
+        "parameters": [
+          {
+            "name": "print",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Open the PDF inline for browser printing rather than download."
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/invoices/{id}/mark-paid": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Record full manual payment and issue a receipt",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "payment_method",
+                  "payment_note",
+                  "confirm_payment"
+                ],
+                "properties": {
+                  "payment_method": {
+                    "type": "string",
+                    "enum": [
+                      "cash",
+                      "bank_transfer",
+                      "mobile_money",
+                      "other"
+                    ]
+                  },
+                  "payment_reference": {
+                    "type": "string",
+                    "maxLength": 180,
+                    "nullable": true
+                  },
+                  "payment_note": {
+                    "type": "string",
+                    "maxLength": 2000
+                  },
+                  "confirm_payment": {
+                    "type": "boolean",
+                    "enum": [
+                      true
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paid invoice; repeat requests preserve the original payment and receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Invoice"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Admin permission required"
+          },
+          "409": {
+            "description": "Invoice voided"
+          },
+          "422": {
+            "description": "Payment details or confirmation missing"
+          }
         }
       }
     }

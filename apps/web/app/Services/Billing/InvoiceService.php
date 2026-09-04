@@ -57,4 +57,24 @@ class InvoiceService
             return $invoice;
         });
     }
+
+    public function markPaid(Invoice $invoice, int $adminId, array $data): Invoice
+    {
+        return DB::transaction(function () use ($invoice, $adminId, $data) {
+            $invoice = Invoice::lockForUpdate()->findOrFail($invoice->id);
+            // A repeat submission must never change the receipt or original payment record.
+            if ($invoice->status === 'paid') { return $invoice; }
+            abort_unless(in_array($invoice->status, ['draft', 'issued']), 409, 'A void invoice cannot be marked as paid.');
+            $invoice->update([
+                'status' => 'paid', 'payment_status' => 'manually_confirmed',
+                'issued_at' => $invoice->issued_at ?? now(), 'paid_at' => now(),
+                'marked_paid_by' => $adminId,
+                'manual_payment_method' => $data['payment_method'],
+                'manual_payment_reference' => $data['payment_reference'] ?? null,
+                'manual_payment_note' => $data['payment_note'],
+            ]);
+            app(ReceiptService::class)->issue($invoice);
+            return $invoice;
+        });
+    }
 }

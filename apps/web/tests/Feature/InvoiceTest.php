@@ -210,4 +210,50 @@ class InvoiceTest extends TestCase
         Sanctum::actingAs($this->admin(), ['other:read']);
         $this->getJson('/api/v1/admin/invoices/'.$invoice->id.'/receipt')->assertForbidden();
     }
+
+    public function test_admin_can_mark_invoice_paid_and_print_or_export_one_receipt()
+    {
+        $invoice = $this->invoice(); $admin = $this->admin();
+        $data = ['payment_method'=>'cash', 'payment_reference'=>'CASH-01', 'payment_note'=>'Received at office', 'confirm_payment'=>1];
+        $this->actingAs($admin)->post('/admin/invoices/'.$invoice->id.'/mark-paid', $data)->assertRedirect('/admin/invoices/'.$invoice->id);
+        $invoice->refresh();
+        $this->assertSame('paid', $invoice->status);
+        $this->assertSame($admin->id, $invoice->marked_paid_by);
+        $this->assertSame('Received at office', $invoice->manual_payment_note);
+        $this->assertSame('Manual payment', $invoice->receipt->details['provider']);
+        $this->assertSame('CASH-01', $invoice->receipt->details['payment_reference']);
+        $number = $invoice->receipt->number;
+        $this->post('/admin/invoices/'.$invoice->id.'/mark-paid', $data)->assertRedirect();
+        $this->assertDatabaseCount('invoice_receipts', 1);
+        $print = $this->get('/admin/invoices/'.$invoice->id.'/receipt?print=1')->assertOk()->assertHeader('Content-Type','application/pdf');
+        $this->assertSame('inline; filename="'.$number.'.pdf"', $print->headers->get('Content-Disposition'));
+        $this->get('/admin/invoices/'.$invoice->id.'/receipt')->assertOk()->assertHeader('Content-Disposition','attachment; filename="'.$number.'.pdf"');
+        $html = view('invoices.receipt-pdf', ['receipt'=>$invoice->receipt,'details'=>$invoice->receipt->details])->render();
+        $this->assertStringContainsString('Method: Cash', $html);
+        $this->assertStringNotContainsString('Processed through Nylon Pay', $html);
+        $this->assertStringNotContainsString('Received at office', $html);
+        $this->get('/admin/invoices/'.$invoice->id)->assertOk()->assertSee('Print receipt');
+    }
+
+    public function test_manual_payment_requires_admin_confirmation_and_non_void_invoice()
+    {
+        $invoice = $this->issued();
+        $data = ['payment_method'=>'bank_transfer','payment_note'=>'Bank receipt verified','confirm_payment'=>1];
+        $this->post('/admin/invoices/'.$invoice->id.'/mark-paid',$data)->assertRedirect('/login');
+        $this->actingAs(User::factory()->create(['role'=>'user']))->postJson('/admin/invoices/'.$invoice->id.'/mark-paid',$data)->assertForbidden();
+        $this->actingAs($this->admin())->postJson('/admin/invoices/'.$invoice->id.'/mark-paid',array_merge($data,['confirm_payment'=>0]))->assertUnprocessable();
+        app(InvoiceService::class)->void($invoice);
+        $this->postJson('/admin/invoices/'.$invoice->id.'/mark-paid',$data)->assertStatus(409);
+        $this->assertDatabaseCount('invoice_receipts', 0);
+    }
+
+    public function test_scoped_admin_api_can_record_manual_payment()
+    {
+        $invoice = $this->issued();
+        Sanctum::actingAs($this->admin(), ['invoices:manage']);
+        $this->postJson('/api/v1/admin/invoices/'.$invoice->id.'/mark-paid',[
+            'payment_method'=>'mobile_money','payment_note'=>'Confirmed mobile transfer','confirm_payment'=>true,
+        ])->assertOk()->assertJsonPath('data.status','paid');
+        $this->assertDatabaseCount('invoice_receipts', 1);
+    }
 }

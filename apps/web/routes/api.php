@@ -30,3 +30,5 @@ Route::delete('v1/auth/token', [\App\Http\Controllers\Billing\ApiSessionControll
 
 Route::get('v1/admin/invoices/{invoice}/receipt', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'receipt'])
     ->middleware(['auth:sanctum', 'admin', \App\Http\Middleware\EnsureInvoiceTokenAbility::class, 'throttle:10,1'])->name('api.invoices.receipt');
+
+Route::post('v1/admin/invoices/{invoice}/mark-paid', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'markPaid'])->middleware(['auth:sanctum', 'admin', \App\Http\Middleware\EnsureInvoiceTokenAbility::class])->name('api.invoices.mark-paid');
