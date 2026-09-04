@@ -11,17 +11,20 @@ class InvoicePaymentService
 {
     public function __construct(private NylonPayGateway $gateway) {}
 
-    public function checkout(Invoice $invoice): string
+    public function checkout(Invoice $invoice, string $phone): string
     {
         abort_unless($this->gateway->configured(), 503, 'Payments are being set up. Please contact the business.');
         // Persist the claim BEFORE the remote call: a timeout must never generate a second invoice.
-        $invoice = DB::transaction(function () use ($invoice) {
+        $invoice = DB::transaction(function () use ($invoice, $phone) {
             $locked = Invoice::lockForUpdate()->findOrFail($invoice->id);
             abort_unless($locked->status === 'issued', 409, 'This invoice is not payable.');
-            if ($locked->checkout_url) { return $locked; }
+            if ($locked->checkout_url) {
+                abort_unless(($locked->payer_phone ?? $locked->client_phone) === $phone, 409, 'Checkout already exists with a different phone number. Contact the business before starting another payment.');
+                return $locked;
+            }
             abort_unless($locked->checkout_state === 'not_started', 409,
                 'Checkout is awaiting confirmation. Please contact the business before trying again.');
-            $locked->update(['checkout_state' => 'creating']);
+            $locked->update(['checkout_state' => 'creating', 'payer_phone' => $phone]);
             return $locked;
         });
         if ($invoice->checkout_url) { return $invoice->checkout_url; }

@@ -84,3 +84,5 @@ Route::get('/invoices/{token}/receipt', [\App\Http\Controllers\Billing\PublicInv
 Route::get('/admin/invoices/{invoice}/receipt', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'receipt'])->middleware(['auth', 'admin', 'throttle:10,1'])->name('admin.invoices.receipt');
 
 Route::post('/admin/invoices/{invoice}/mark-paid', [\App\Http\Controllers\Billing\AdminInvoiceController::class, 'markPaid'])->middleware(['auth', 'admin'])->name('admin.invoices.mark-paid');
+
+Route::get('/invoices/{token}/checkout', [\App\Http\Controllers\Billing\PublicInvoiceController::class, 'confirmPhone'])->name('invoices.confirm-phone');

@@ -27,7 +27,7 @@ class NylonPayGateway
         $result = $this->client()->createInvoice([
             'amount' => $invoice->total, 'currency' => $invoice->currency,
             'customerEmail' => $invoice->client_email, 'customerName' => $invoice->client_name,
-            'customerPhone' => $invoice->client_phone, 'description' => $invoice->title,
+            'customerPhone' => $invoice->payer_phone ?? $invoice->client_phone, 'description' => $invoice->title,
             'merchantReference' => $invoice->payment_reference,
             'reference' => $invoice->payment_reference,
             'redirectUrl' => $invoice->share_url,

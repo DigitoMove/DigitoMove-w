@@ -82,8 +82,8 @@ class InvoiceTest extends TestCase
             $mock->shouldReceive('configured')->andReturn(true);
             $mock->shouldReceive('createCheckout')->once()->withArgs(fn ($invoice) => $invoice->total === 25000)->andReturn(['url' => 'https://pay.example.com/invoice/one', 'id' => 'provider-one']);
         });
-        $this->post($invoice->share_url.'/pay', ['amount' => 1])->assertRedirect('https://pay.example.com/invoice/one');
-        $this->post($invoice->share_url.'/pay')->assertRedirect('https://pay.example.com/invoice/one');
+        $this->post($invoice->share_url.'/pay', ['amount' => 1, 'phone' => '0771234567', 'confirm_phone' => 1])->assertRedirect('https://pay.example.com/invoice/one');
+        $this->post($invoice->share_url.'/pay', ['phone' => '0771234567', 'confirm_phone' => 1])->assertRedirect('https://pay.example.com/invoice/one');
         $this->get($invoice->share_url.'?status=successful')->assertOk();
         $this->assertSame('issued', $invoice->fresh()->status);
         $this->actingAs($this->admin())->postJson('/admin/invoices/'.$invoice->id.'/void')->assertStatus(409);
@@ -96,8 +96,8 @@ class InvoiceTest extends TestCase
             $mock->shouldReceive('configured')->andReturn(true);
             $mock->shouldReceive('createCheckout')->once()->andThrow(new \RuntimeException('timeout'));
         });
-        $this->post($invoice->share_url.'/pay')->assertSessionHas('payment_error');
-        $this->post($invoice->share_url.'/pay')->assertSessionHas('payment_error');
+        $this->post($invoice->share_url.'/pay', ['phone' => '0771234567', 'confirm_phone' => 1])->assertSessionHas('payment_error');
+        $this->post($invoice->share_url.'/pay', ['phone' => '0771234567', 'confirm_phone' => 1])->assertSessionHas('payment_error');
         $this->assertSame('uncertain', $invoice->fresh()->checkout_state);
     }
 
@@ -105,7 +105,7 @@ class InvoiceTest extends TestCase
     {
         config(['nylonpay.api_key' => null, 'nylonpay.api_secret' => null]);
         $invoice = $this->issued();
-        $this->post($invoice->share_url.'/pay')->assertSessionHas('payment_error');
+        $this->post($invoice->share_url.'/pay', ['phone' => '0771234567', 'confirm_phone' => 1])->assertSessionHas('payment_error');
         $this->assertSame('not_started', $invoice->fresh()->checkout_state);
         app(InvoiceService::class)->void($invoice);
         $this->get($invoice->share_url)->assertOk()->assertSee('Invoice voided')->assertDontSee('Pay with Nylon Pay');
@@ -135,7 +135,7 @@ class InvoiceTest extends TestCase
         $this->assertSame('paid', $invoice->fresh()->status);
         $this->assertSame($paidAt, $invoice->fresh()->paid_at->toIso8601String());
         $this->assertDatabaseCount('invoice_webhook_deliveries', 2);
-        $this->post($invoice->share_url.'/pay')->assertSessionHas('payment_error');
+        $this->post($invoice->share_url.'/pay', ['phone' => '0771234567', 'confirm_phone' => 1])->assertSessionHas('payment_error');
     }
 
     public function test_reconciliation_confirms_payment_without_webhook()
@@ -255,5 +255,52 @@ class InvoiceTest extends TestCase
             'payment_method'=>'mobile_money','payment_note'=>'Confirmed mobile transfer','confirm_payment'=>true,
         ])->assertOk()->assertJsonPath('data.status','paid');
         $this->assertDatabaseCount('invoice_receipts', 1);
+    }
+
+    public function test_payer_must_confirm_a_valid_mobile_number_before_checkout()
+    {
+        $invoice = $this->issued();
+        $this->get($invoice->share_url.'/checkout')->assertOk()->assertSee('Confirm your number');
+        $this->postJson($invoice->share_url.'/pay', ['phone'=>'0771234567'])->assertUnprocessable()->assertJsonValidationErrors('confirm_phone');
+        $this->postJson($invoice->share_url.'/pay', ['phone'=>'12345','confirm_phone'=>true])->assertUnprocessable()->assertJsonValidationErrors('phone');
+        $this->postJson($invoice->share_url.'/pay', ['phone'=>['0771234567'],'confirm_phone'=>true])->assertUnprocessable();
+        $this->assertSame('not_started', $invoice->fresh()->checkout_state);
+        $this->assertNull($invoice->fresh()->payer_phone);
+    }
+
+    public function test_confirmed_phone_is_normalized_and_cannot_change_an_existing_checkout()
+    {
+        $invoice = $this->issued(); $invoice->update(['client_phone'=>'+256701111111']);
+        $this->mock(NylonPayGateway::class, function ($mock) {
+            $mock->shouldReceive('configured')->andReturn(true);
+            $mock->shouldReceive('createCheckout')->once()->withArgs(fn ($invoice) => $invoice->payer_phone === '+256771234567')
+                ->andReturn(['url'=>'https://pay.example.com/confirmed','id'=>'confirmed']);
+        });
+        $this->post($invoice->share_url.'/pay',['phone'=>'077 123 4567','confirm_phone'=>1])->assertRedirect('https://pay.example.com/confirmed');
+        $this->assertSame('+256771234567', $invoice->fresh()->payer_phone);
+        $this->assertSame('+256701111111', $invoice->fresh()->client_phone);
+        $this->post($invoice->share_url.'/pay',['phone'=>'+256701234567','confirm_phone'=>1])->assertSessionHas('payment_error');
+        $this->assertSame('+256771234567', $invoice->fresh()->payer_phone);
+        $this->post($invoice->share_url.'/pay',['phone'=>'256771234567','confirm_phone'=>1])->assertRedirect('https://pay.example.com/confirmed');
+    }
+
+    public function test_shared_invoice_has_absolute_preview_metadata_without_client_details()
+    {
+        $invoice = $this->issued();
+        $response = $this->get($invoice->share_url)->assertOk();
+        $dom = new \DOMDocument();
+        @$dom->loadHTML($response->getContent());
+        $xpath = new \DOMXPath($dom);
+        $this->assertSame('website', $xpath->evaluate('string(//meta[@property="og:type"]/@content)'));
+        $this->assertSame($invoice->share_url, $xpath->evaluate('string(//meta[@property="og:url"]/@content)'));
+        $this->assertSame(asset('assets/img/social/invoice-preview.png'), $xpath->evaluate('string(//meta[@property="og:image"]/@content)'));
+        $this->assertSame('summary_large_image', $xpath->evaluate('string(//meta[@name="twitter:card"]/@content)'));
+        $description = $xpath->evaluate('string(//meta[@property="og:description"]/@content)');
+        $this->assertStringNotContainsString($invoice->client_name, $description);
+        $this->assertStringNotContainsString($invoice->client_email, $description);
+        $this->assertSame('noindex,nofollow', $xpath->evaluate('string(//meta[@name="robots"]/@content)'));
+        $size = getimagesize(public_path('assets/img/social/invoice-preview.png'));
+        $this->assertSame([1200, 630], [$size[0], $size[1]]);
+        $this->get($this->invoice()->share_url)->assertNotFound();
     }
 }

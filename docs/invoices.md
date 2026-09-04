@@ -101,3 +101,15 @@ Administrators can open a draft or issued invoice, choose **Mark as paid**, sele
 Paid invoices offer **Print receipt** (opens the PDF inline; use the browser PDF viewer's print button) and **Download receipt · PDF**. Manually recorded receipts identify the payment method and business confirmation rather than claiming Nylon Pay processed them. A started provider checkout must be resolved with Nylon Pay to avoid a second collection; the admin form displays this reminder.
 
 Deploy the code and run `php artisan migrate --force` from `apps/web` to apply `2026_09_04_000003_add_manual_invoice_payments`. The scoped mobile endpoint is `POST /api/v1/admin/invoices/{id}/mark-paid`. Verification: 24 tests / 171 assertions pass, including permissions, required confirmation, void rejection, idempotent receipts and both PDF response modes.
+
+## Client payment number confirmation
+
+The client Pay button now opens a separate confirmation page. The client enters a Ugandan mobile money number and explicitly confirms it before checkout creation. Local `07...` and international `2567...` / `+2567...` numbers normalize to E.164. The confirmed number is stored as `payer_phone` and sent to Nylon Pay as `customerPhone`, without changing the original billing contact. Invalid/unconfirmed submissions do not create checkout. Existing checkout numbers cannot be silently replaced. This confirms the user's choice and number format; it does not verify ownership via OTP or look up the wallet holder. Payment authorization still happens through Nylon Pay.
+
+Deploy and run `php artisan migrate --force` to apply `2026_09_04_000004_add_invoice_payer_phone`. Nylon Pay's current [coverage reference](https://docs.nylonpay.nilesquad.com/docs/coverage/supported-payment-methods) lists Visa/hosted cards as coming in v2; the current invoice integration supports mobile money.
+
+## Shared-link preview
+
+Invoice pages now render Open Graph and Twitter Card metadata directly in the HTML, with a static 1200 x 630 PNG at `public/assets/img/social/invoice-preview.png`. When a client invoice link is pasted into a supported messaging app, its preview can show the Digito Move card, title and description. Client names, amounts and payment status are omitted from the preview metadata; the invoice itself remains accessible to anyone with its private link. Drafts stay inaccessible. Search indexing remains disabled.
+
+Deploy the Blade partial, updated invoice view and PNG together. The public HTTPS invoice URL and image must be reachable by the messaging service without authentication or bot challenges. Set the production APP_URL to https://digitomove.com and leave ASSET_URL empty unless using a working HTTPS asset host. No database migration is needed for this preview feature. Existing shared messages may retain cached previews; paste the link into a new message after deployment. No message was sent during verification.

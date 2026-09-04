@@ -23,12 +23,19 @@ class PublicInvoiceController extends Controller
     {
         return $receipts->download($this->find($token));
     }
-    public function checkout(string $token, InvoicePaymentService $payments)
+    public function confirmPhone(string $token, NylonPayGateway $gateway)
     {
         $invoice = $this->find($token);
-        try { return redirect()->away($payments->checkout($invoice))->header('Referrer-Policy', 'no-referrer'); }
+        if ($invoice->status !== 'issued') { return redirect()->route('invoices.show', $token); }
+        return response()->view('invoices.confirm-phone', ['invoice' => $invoice, 'configured' => $gateway->configured()])
+            ->header('Cache-Control', 'private, no-store')->header('Referrer-Policy', 'no-referrer')->header('X-Robots-Tag', 'noindex, nofollow');
+    }
+    public function checkout(\App\Http\Requests\ConfirmInvoicePhoneRequest $request, string $token, InvoicePaymentService $payments)
+    {
+        $invoice = $this->find($token);
+        try { return redirect()->away($payments->checkout($invoice, $request->validated()['phone']))->header('Referrer-Policy', 'no-referrer'); }
         catch (\Symfony\Component\HttpKernel\Exception\HttpException $e) {
-            return back()->with('payment_error', $e->getMessage());
+            return redirect()->route('invoices.confirm-phone', $token)->withInput($request->only('phone'))->with('payment_error', $e->getMessage());
         }
     }
     public function refresh(string $token, InvoicePaymentService $payments)
