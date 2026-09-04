@@ -5,7 +5,7 @@
 **/vendor/
 **/node_modules/
 **/.dart_tool/
-**/build/
+
 **/.flutter-plugins-dependencies
 **/*.sqlite
 **/*.sqlite-*
